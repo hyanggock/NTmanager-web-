@@ -17,21 +17,18 @@
 
     <div id="content1" class="tab-content red">
       <h1>교육재정-노-</h1><br>
-      <form>
-        <script language="JavaScript">
-          for (i = 1; i < 11; i++) {
-            for (j = 1; j < 11; j++) {
-              document.write('<span style="background-color: yellow;">');
-              document.write(i);
-              document.write("행 ");
-              document.write(j);
-              document.write("열  ");
-              document.write("</span>")
-            }
-            document.write("<br><hr>");
+      <div class="flex-contanier.row">
+        <script language="Javascript">
+          for (i = 1; i < 101; i++) {
+            document.write('<div class=notebtn id=js-n');
+            document.write(i);
+            document.write(' ');
+            document.write('style="border: 1px solid black; height:9%; width:9%; padding: 0.1%; margin:0.1%; text-align:center; float:left;">');
+            document.write(i);
+            document.write('</div>\n');
           }
         </script>
-      </form>
+      </div>
     </div>
     <div id="content2" class="tab-content blue">
       <h1>지식정보-노-</h1>
