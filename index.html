@@ -34,19 +34,19 @@
     </div>
     <div id="content2" class="tab-content blue">
       <h1>지식정보-노-</h1>
-      <div class="flex-contanier.row"  id="지식정보-노-">
+      <div class="flex-contanier.row" id="지식정보-노-">
         데이터 받아오는중..
       </div>
     </div>
     <div id="content3" class="tab-content green">
       <h1>NB2104</h1>
-      <div class="flex-contanier.row"  id="NB2104">
+      <div class="flex-contanier.row" id="NB2104">
         데이터 받아오는중..
       </div>
     </div>
     <div id="content4" class="tab-content yellow">
       <h1>NB2203</h1>
-      <div class="flex-contanier.row"  id="NB2203">
+      <div class="flex-contanier.row" id="NB2203" style="background-color: rgb(176, 255, 197);">
         데이터 받아오는중..
       </div>
     </div>
@@ -76,14 +76,27 @@
 
   database = getDatabase(app);
 
+
   function getnumdata(input) {
     var tempdatas = 0;
     onValue(ref(database, input), (snapData) => {
       tempdatas = (Object.keys(snapData.val()).length);
+      console.log(snapData.child('1' + '/notebookstatus').val().toString());
       document.getElementById(input).innerHTML = '';
       for (i = 1; i <= tempdatas; i++) {
-       // console.log(snapData.child().val());
-        document.getElementById(input).innerHTML += '<div class=notebtn id=js-n' + i + '; ' + 'style="border: 1px solid black; height:50px; width:19%; padding: 0.1%; margin:0.1% 0.1% 0.5% 0.1%; text-align:center; float:left;">' + i + '</div>\n';
+        if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=js-n' + i + '; ' + 'style="border: 1px solid black; background-color: rgb(176, 255, 197); height:50px; width:19%; padding: 0.1%; margin:0.1% 0.1% 0.5% 0.1%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
+        }
+        else if (snapData.child(i + '/notebookstatus').val().toString() == "processing") {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=js-n' + i + '; ' + 'style="border: 1px solid black; background-color: rgb(255, 204, 132); height:50px; width:19%; padding: 0.1%; margin:0.1% 0.1% 0.5% 0.1%; text-align:center; float:left;">' + i + '<br>작업중..' + '</div>\n';
+        }
+        else if (snapData.child(i + '/notebookstatus').val().toString() == "rentaled") {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=js-n' + i + '; ' + 'style="border: 1px solid black; color: white; background-color: rgb(62, 53, 65); height:50px; width:19%; padding: 0.1%; margin:0.1% 0.1% 0.5% 0.1%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
+        }
+        else
+        {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=js-n' + i + '; ' + 'style="border: 1px solid black; background-color: red; height:50px; width:19%; padding: 0.1%; margin:0.1% 0.1% 0.5% 0.1%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
+        }
       }
       return tempdatas;
     });
