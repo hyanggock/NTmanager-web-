@@ -190,7 +190,7 @@
           document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','processing');"` +'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "booked") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','rentaled');"` +'style="border: 1px transparent; border-radius: 10px; color: white; background-color: yellow; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','rentaled');"` +'style="border: 1px transparent; border-radius: 10px; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
         }
         else {
           document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','rentaled');"` +'style="border: 1px transparent; border-radius: 10px; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
