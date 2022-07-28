@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html>
-
+<title>
+  노트북 대여현황(관리자 모드)
+</title>
 <head>
   <meta name="viewport" content='"width=device-width, initial-scale=1, shrink-to-fit=no"'>
   <link href="tab_test.css" rel="stylesheet">
   <script>
     var database;
     var numofdatas = [];
+    function changestatus(input, number, vKey, value)
+    {
+      if(value=='rentaled')
+      {
 
+      }
+      else if(value=='standby')
+      {
+
+      }
+      else if(value=='processing')
+      {
+
+      }
+      updatedata()
+    }
   </script>
 
 </head>
@@ -15,7 +32,8 @@
 <body>
   <div style="position:fixed; top:50px; right:5px">
     <span id=testbtn style="font-size:xx-large"
-      onclick="updatedata('교육재정-노-','2','notebookstatus','standby')">Test</span>
+      onclick="getdata('교육재정-노-','2','notebookstatus');">Test
+    </span>
   </div>
   <div style="position:absolute; top:50px; left:5px">
     <span id=backbtn style="font-size:xx-large" onclick="document.getElementById('tab_dash').click();"></span>
@@ -146,6 +164,13 @@
         console.log("update failed : " + error);
       })
   }
+  
+  window.getdata=function(input,number,dataname)
+  {
+    const val = get(ref(database, input+'/'+number+'/'+dataname));
+    console.log(val.key);
+    return val;
+  }
 
   function getnumdata(input) {
     var tempdatas = 0;
@@ -160,16 +185,16 @@
       for (i = 1; i <= tempdatas; i++) {
         if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
           standbynum = standbynum + 1;
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' +  input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','rentaled');"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "processing") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>작업중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','standby');"` +'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>작업중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "rentaled") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','processing');"` +'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
         }
         else {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="updatedata('`+input+`',`+i+`,'notebookstatus','rentaled');"` +'style="border: 1px transparent; border-radius: 10px; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
         }
       }
       document.getElementById(input + 'current').innerHTML = standbynum;
