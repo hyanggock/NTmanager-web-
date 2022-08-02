@@ -134,12 +134,12 @@
   function getnumdata(input) {
     
     onValue(ref(database, input), (snapData) => {
+      var tempdatas = 0;
+      var standbynum =0;
       tempdatas = (Object.keys(snapData.val()).length);
       console.log(snapData.child('1' + '/notebookstatus').val().toString());
       document.getElementById(input).innerHTML = '';
       document.getElementById(input+'max').innerHTML = "/"+tempdatas;
-      var tempdatas = 0;
-      var standbynum =0;
       for (i = 1; i <= tempdatas; i++) {
         if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
           standbynum=standbynum+1;
