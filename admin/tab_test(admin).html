@@ -9,21 +9,48 @@
   <script>
     var database;
     var numofdatas = [];
-    function changestatus(input, number, vKey, value)
-    {
-      if(value=='rentaled')
-      {
-
+    var checkmode = false;
+    function checkmodeOnOff() {
+      var chktext = "점검";
+      if (checkmode == true) {
+        checkmode = false;
+        chktext = "점검 OFF";
       }
-      else if(value=='standby')
-      {
-
+      else {
+        checkmode = true;
+        chktext = "점검 ON";
       }
-      else if(value=='processing')
-      {
-
+      document.getElementById("checkbtn").innerHTML = chktext;
+    }
+    function changestatus(input, number, vKey, value) {
+      var nextValue;
+      if (checkmode == true) {
+        if (value == 'checking') {
+          nextValue = 'standby';
+        }
+        else {
+          nextValue = 'checking';
+        }
       }
-      updatedata()
+      else{
+        if (value == 'rentaled') {
+          nextValue = 'processing';
+        }
+        else if (value == 'standby') {
+          nextValue = 'booked';
+        }
+        else if (value == 'processing') {
+          nextValue = 'standby';
+        }
+        else if (value == 'booked') {
+          nextValue = 'rentaled';
+        }
+        else if (value == 'checking')
+        {
+          nextValue = 'checking';
+        }
+      }
+      updatedata(input,number,vKey,nextValue);
     }
   </script>
 
@@ -31,7 +58,11 @@
 
 <body>
   <div style="position:absolute; top:50px; left:5px">
-    <span id=backbtn class="btns" style="font-size:xx-large" onclick="document.getElementById('tab_dash').click();"></span>
+    <span id=backbtn class="btns" style="font-size:xx-large"
+      onclick="document.getElementById('tab_dash').click();"></span>
+  </div>
+  <div style="position:absolute; top:50px; right:5px">
+    <span id=checkbtn class="btns" style="font-size:large" onclick="checkmodeOnOff();">점검 OFF</span>
   </div>
   <div class="tab-area">
     <input type="radio" onclick="document.getElementById('backbtn').innerHTML=''" name="tabs" id="tab_dash" checked>
@@ -159,10 +190,9 @@
         console.log("update failed : " + error);
       })
   }
-  
-  window.getdata=function(input,number,dataname)
-  {
-    const val = get(ref(database, input+'/'+number+'/'+dataname));
+
+  window.getdata = function (input, number, dataname) {
+    const val = get(ref(database, input + '/' + number + '/' + dataname));
     console.log(val.key);
     return val;
   }
@@ -181,19 +211,22 @@
       for (i = 1; i <= tempdatas; i++) {
         if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
           standbynum = standbynum + 1;
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' +  input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('`+input+`',`+i+`,'notebookstatus','booked'); updatedata('`+input+`',`+i+`,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','standby'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "processing") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('`+input+`',`+i+`,'notebookstatus','standby'); updatedata('`+input+`',`+i+`,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` +'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>포멧중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','processing'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>포멧중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "rentaled") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('`+input+`',`+i+`,'notebookstatus','processing'); updatedata('`+input+`',`+i+`,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` +'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','rentaled'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "booked") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('`+input+`',`+i+`,'notebookstatus','rentaled'); updatedata('`+input+`',`+i+`,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` +'style="border: 1px transparent; border-radius: 10px; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','booked'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+        }
+        else if (snapData.child(i + '/notebookstatus').val().toString() == "checking") {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','checking'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>점검중' + '</div>\n';
         }
         else {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('`+input+`',`+i+`,'notebookstatus','rentaled'); updatedata('`+input+`',`+i+`,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` +'style="border: 1px transparent; border-radius: 10px; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('` + input + `',` + i + `,'notebookstatus','unknown'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: blueviolet; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
         }
       }
       document.getElementById(input + 'current').innerHTML = standbynum;
