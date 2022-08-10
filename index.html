@@ -3,21 +3,64 @@
   <title> 노트북 대여현황 </title>
 <head>
   <meta name="viewport" content='"width=device-width, initial-scale=1, shrink-to-fit=no"'>
-  <link href="css/style.css" rel="stylesheet">
+  <link href="tab_test.css" rel="stylesheet">
   <script>
     var database;
     var numofdatas = [];
-
+    var checkmode = false;
+    function checkmodeOnOff() {
+      var chktext = "점검";
+      if (checkmode == true) {
+        checkmode = false;
+        chktext = "점검 OFF";
+      }
+      else {
+        checkmode = true;
+        chktext = "점검 ON";
+      }
+      document.getElementById("checkbtn").innerHTML = chktext;
+    }
+    function changestatus(input, number, vKey, value) {
+      var nextValue;
+      if (checkmode == true) {
+        if (value == 'checking') {
+          nextValue = 'standby';
+        }
+        else {
+          nextValue = 'checking';
+        }
+      }
+      else{
+        if (value == 'rentaled') {
+          nextValue = 'processing';
+        }
+        else if (value == 'standby') {
+          nextValue = 'booked';
+        }
+        else if (value == 'processing') {
+          nextValue = 'standby';
+        }
+        else if (value == 'booked') {
+          nextValue = 'rentaled';
+        }
+        else if (value == 'checking')
+        {
+          nextValue = 'checking';
+        }
+      }
+      updatedata(input,number,vKey,nextValue);
+    }
   </script>
 
 </head>
 
 <body>
-  <script>
-    varnum = numofdatas[0];
-  </script>
   <div style="position:absolute; top:50px; left:5px">
-    <span id=backbtn style="font-size:xx-large" onclick="document.getElementById('tab_dash').click();"></span>
+    <span id=backbtn class="btns" style="font-size:xx-large"
+      onclick="document.getElementById('tab_dash').click();"></span>
+  </div>
+  <div style="position:absolute; top:50px; right:5px">
+    <span id=checkbtn class="btns" style="font-size:large" onclick="checkmodeOnOff();">점검 OFF</span>
   </div>
   <div class="tab-area">
     <input type="radio" onclick="document.getElementById('backbtn').innerHTML=''" name="tabs" id="tab_dash" checked>
@@ -32,46 +75,50 @@
     <label for="tab4">NB2203</label>
 
     <div id="content0" class="tab-content dash" style=" text-align: center; align-content: center;">
-      <h1>대시보드</h1>
+      <h1 id="dashboard_label">대시보드(로딩중)</h1>
       <div class="flex-contanier row" id="대시보드" style="text-align: center;">
-        <div class=dashbtn onclick="document.getElementById('tab1').click();" style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
+        <div class=dashbtn onclick="document.getElementById('tab1').click();"
+          style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
           <h2>교육재정-노-</h2>
           <p>
             <span id="교육재정-노-current" style="color:black; font-size: xxx-large;">
-              21
+              00
             </span>
             <span id="교육재정-노-max" style="color:black; font-size: medium;">
               /00<span>
               </span>
           </p>
         </div>
-        <div class=dashbtn onclick="document.getElementById('tab2').click();" style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
+        <div class=dashbtn onclick="document.getElementById('tab2').click();"
+          style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
           <h2>지식정보-노-</h2>
           <p>
             <span id="지식정보-노-current" style="color:black; font-size: xxx-large;">
               00
             </span>
             <span id="지식정보-노-max" style="color:black; font-size: medium;">
-              /99<span>
+              /00<span>
               </span>
           </p>
         </div>
-        <div class=dashbtn onclick="document.getElementById('tab3').click();" style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
+        <div class=dashbtn onclick="document.getElementById('tab3').click();"
+          style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
           <h2>NB2104</h2>
           <p>
             <span id="NB2104current" style="color:black; font-size: xxx-large;">
-              21
+              00
             </span>
             <span id="NB2104max" style="color:black; font-size: medium;">
               /00<span>
               </span>
           </p>
         </div>
-        <div class=dashbtn onclick="document.getElementById('tab4').click();" style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
+        <div class=dashbtn onclick="document.getElementById('tab4').click();"
+          style="box-shadow: 0px 0px 8px 1px rgb(184, 184, 184); border-radius: 10px; background-color: rgb(255, 255, 255); height:200px; width:42%; padding: 0.1%; margin:10px 3% 10px 3%; text-align:center; float:left;">
           <h2>NB2203</h2>
           <p>
             <span id="NB2203current" style="color:black; font-size: xxx-large;">
-              21
+              00
             </span>
             <span id="NB2203max" style="color:black; font-size: medium;">
               /00<span>
@@ -109,7 +156,7 @@
 <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-  import { getDatabase, ref, child, set, get, onValue } from 'https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js';
+  import { getDatabase, ref, child, set, get, onValue, update } from 'https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js';
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -130,35 +177,57 @@
 
   database = getDatabase(app);
 
+  window.updatedata = function (input, number, vKey, value) {
+    const updates = {};
+    updates[input + '/' + number + '/' + vKey] = value;
+    update(ref(database), updates)
+      .then(() => {
+        console.log("data Updated");
+      })
+      .catch((error) => {
+        console.log("update failed : " + error);
+      })
+  }
+
+  window.getdata = function (input, number, dataname) {
+    const val = get(ref(database, input + '/' + number + '/' + dataname));
+    console.log(val.key);
+    return val;
+  }
 
   function getnumdata(input) {
-    
+    var tempdatas = 0;
+    var standbynum = 0;
     onValue(ref(database, input), (snapData) => {
-      var tempdatas = 0;
-      var standbynum =0;
+      tempdatas = 0;
+      standbynum = 0;
       tempdatas = (Object.keys(snapData.val()).length);
       console.log(snapData.child('1' + '/notebookstatus').val().toString());
       document.getElementById(input).innerHTML = '';
-      document.getElementById(input+'max').innerHTML = "/"+tempdatas;
+      document.getElementById(input + 'max').innerHTML = "/" + tempdatas;
+      document.getElementById('dashboard_label').innerHTML = "대시보드";
       for (i = 1; i <= tempdatas; i++) {
         if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
-          standbynum=standbynum+1;
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
+          standbynum = standbynum + 1;
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','standby'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "processing") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>포멧중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','processing'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>포멧중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "rentaled") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','rentaled'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "booked") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' '  +'style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','booked'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+        }
+        else if (snapData.child(i + '/notebookstatus').val().toString() == "checking") {
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; changestatus('` + input + `',` + i + `,'notebookstatus','checking'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>점검중' + '</div>\n';
         }
         else {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + `onclick="let temp=new Date(); let month=temp.getMonth()+1; updatedata('` + input + `',` + i + `,'notebookstatus','unknown'); updatedata('` + input + `',` + i + `,'latestAccess',temp.getFullYear()+'/' + month +'/'+temp.getDate());"` + 'style="border: 1px transparent; border-radius: 10px; color: white; background-color: blueviolet; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
         }
       }
-      document.getElementById(input+'current').innerHTML = standbynum;
+      document.getElementById(input + 'current').innerHTML = standbynum;
       return tempdatas;
     });
   }
