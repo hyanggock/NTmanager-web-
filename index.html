@@ -266,25 +266,30 @@
       document.getElementById(input).innerHTML = '';
       document.getElementById(input + 'max').innerHTML = "/" + tempdatas;
       for (i = 1; i <= tempdatas; i++) {
+        var tempval='';
+        if(snapData.child(i + '/info').val().toString() != "none")
+        {
+          tempval='<div class="child abs" style="position: absolute;"><span style="position: relative; bottom: 14.5px; right: 18px;">ⓘ</span></div>';
+        }
         if (snapData.child(i + '/notebookstatus').val().toString() == "standby") {
           standbynum = standbynum + 1;
           dash_std = dash_std + 1;
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>준비됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; background-color: rgb(93, 255, 179); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i  + '<br>준비됨' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "processing") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>작업중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; background-color: rgb(255, 204, 132); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i + '<br>작업중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "rentaled") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>대여중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(62, 53, 65); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i + '<br>대여중' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "booked") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>예약됨' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: rgb(174, 182, 191); height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i + '<br>예약됨' + '</div>\n';
         }
         else if (snapData.child(i + '/notebookstatus').val().toString() == "checking") {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>수리중' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'readonly style="border: 1px transparent; border-radius: 10px; color: white; background-color: red; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i + '<br>수리중' + '</div>\n';
         }
         else {
-          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: blueviolet; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + i + '<br>오류' + '</div>\n';
+          document.getElementById(input).innerHTML += '<div class=notebtn id=' + input + '/' + i + tempval + ' ' + 'style="border: 1px transparent; border-radius: 10px; background-color: blueviolet; height:50px; width:18%; padding: 0.1%; margin:0.1% 0.2% 0.5% 0.2%; text-align:center; float:left;">' + tempval + i + '<br>오류' + '</div>\n';
         }
         document.getElementById(input + '/' + i).addEventListener('click', function () {
 
@@ -294,7 +299,11 @@
       return tempdatas;
     });
   }
+  window.getproblemdate=function(input) {
+    onValue(ref(database, input), (snapData) => {
 
+    });
+  }
   window.getpopupdata = function (input) {
     document.getElementById('rental_able').innerHTML = '대기중';
     document.getElementById('rental_book').innerHTML = '대기중';
