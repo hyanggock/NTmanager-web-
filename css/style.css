@@ -4,6 +4,18 @@ body {
   padding: 0%;
   margin: 0%;
 }
+.problemPopup{
+  display:none;
+}
+.animated_color {
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+
+.animated_position {
+  transition-property: transform;
+  transition-duration: 0.2s;
+}
 
 .btns {
   cursor: pointer;
