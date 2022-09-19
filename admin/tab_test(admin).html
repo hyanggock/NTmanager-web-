@@ -157,7 +157,7 @@
       <div>
         <h2 id="problemTitle">제목</h2>
       </div>
-      <div style="height: 10%;">
+      <div style="height: 2%;">
       </div>
       <span>
         문제 내용
@@ -165,7 +165,7 @@
       <div style="display: flex; flex-direction: column; width:100%; align-content: center; align-items: center; ">
         <input type="text" style="width:60%" id="problemNote" value="텍스트 입력">
       </div>
-      <div style="height: 10%;">
+      <div style="height: 2%;">
       </div>
       <span>
         이미지(링크)
@@ -173,11 +173,18 @@
       <div style="display: flex; flex-direction: column; width:100%; align-content: center; align-items: center; ">
         <input type="text" style="width:60%" id="problemImage" value="이미지 링크">
       </div>
-      <div style="height: 10%;">
+      <div style="height: 2%;">
       </div>
+      <div>
+        <img id="problemImagePic" width="100px" height="100px" src="">
+      </div>
+      <div style="height: 2%;">
+      </div>
+
       <div style="bottom:5%">
         <button onclick="ChangeProblemValue();"> 저장 </button>
         <button onclick="document.getElementById('problemNote').value='';document.getElementById('problemImage').value='';problemHide();"> 취소 </button>
+        <button onclick="document.getElementById('problemImagePic').src=document.getElementById('problemImage').value;">이미지 미리보기</button>
       </div>
     </div>
   </div>
