@@ -111,6 +111,7 @@
         let infodatas=infodata.split('#');
         document.getElementById('problemNote').value=infodatas[0];
         document.getElementById('problemImage').value=infodatas[1];
+        document.getElementById('problemImagePic').src=infodatas[1];
         }
         problemShow();
       }
@@ -149,7 +150,7 @@
     <img width="100%" height="100%" src="https://firebasestorage.googleapis.com/v0/b/ntmanagerdb.appspot.com/o/etcImage%2Fhuman-resources.png?alt=media&token=98a94f80-a107-45e1-94cd-2e17714759ea">
   </div>
   <div class="problemPopup" style="z-index: 450; position:fixed; width:100%;height:100%;" id="problemPopup">
-    <div class="animation_color" onclick="problemHide();" id="problemPopup_background"
+    <div class="animation_color" onclick="problemHide();document.getElementById('problemImagePic').src='';" id="problemPopup_background"
       style="width:100%;height:100%; position:absolute; background-color: rgba(125, 125, 125,0.2);">
     </div>
     <div class="animation_position" id="problemPopup_description"
@@ -163,7 +164,7 @@
         문제 내용
       </span>
       <div style="display: flex; flex-direction: column; width:100%; align-content: center; align-items: center; ">
-        <input type="text" style="width:60%" id="problemNote" value="텍스트 입력">
+        <input type="text" style="width:60%" id="problemNote" value="">
       </div>
       <div style="height: 2%;">
       </div>
@@ -171,7 +172,7 @@
         이미지(링크)
       </span>
       <div style="display: flex; flex-direction: column; width:100%; align-content: center; align-items: center; ">
-        <input type="text" style="width:60%" id="problemImage" value="이미지 링크">
+        <input type="text" style="width:60%" id="problemImage" value="">
       </div>
       <div style="height: 2%;">
       </div>
@@ -182,8 +183,8 @@
       </div>
 
       <div style="bottom:5%">
-        <button onclick="ChangeProblemValue();"> 저장 </button>
-        <button onclick="document.getElementById('problemNote').value='';document.getElementById('problemImage').value='';problemHide();"> 취소 </button>
+        <button onclick="ChangeProblemValue();document.getElementById('problemImagePic').src='';"> 저장 </button>
+        <button onclick="document.getElementById('problemNote').value='';document.getElementById('problemImage').value='';document.getElementById('problemImagePic').src='';problemHide();"> 취소 </button>
         <button onclick="document.getElementById('problemImagePic').src=document.getElementById('problemImage').value;">이미지 미리보기</button>
       </div>
     </div>
