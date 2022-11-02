@@ -100,7 +100,13 @@
         let infodata=getdatas(input,number,'info');
         scopeinput=input;
         scopenumber=number;
-        document.getElementById('problemTitle').innerHTML=input+number;
+        Tnum=number.toString();
+        if(input=='NB2203'||input=='NB2104')
+        {
+          Tnum=Tnum.padStart(2,'0');
+          Tnum='-00'+Tnum;
+        }
+        document.getElementById('problemTitle').innerHTML=input+Tnum;
         if(infodata=='none')
         {
           document.getElementById('problemNote').value='';
