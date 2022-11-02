@@ -327,9 +327,9 @@
   window.getproblemdata = function (input) {
     var problempopuptitle = input;
     var words = input.split('/');
-    if (words[0] == 'NB2104' || words[1] == 'NB2203') {
+    if (words[0] == 'NB2104' || words[0] == 'NB2203') {
       words[1]=words[1].toString();
-      words[1].padStart(2, '0');
+      words[1]=words[1].padStart(2, '0');
       words[1]='-00'+words[1];
     }
     onValue(ref(database, input), (snapData) => {
